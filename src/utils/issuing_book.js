@@ -1,0 +1,31 @@
+const mongo = require("mongoose");
+const schema = require("./schema");
+
+mongo.connect("mongodb://localhost:27017/book");
+
+async function issue(item, shop_name, cost, user, librarian) {
+  const data = { book_name: item, ISBN_No: Date.now(), cost: cost, shop_name: shop_name };
+  const users = mongo.model(`${user}_boroweds`, schema.schema4);
+  const ok = new users(data);
+
+  try {
+    await ok.save();
+
+    const lib = mongo.model(`${librarian}`, schema.schema);
+    const search = await lib.find({ book_name: item });
+    console.log(search[0].count);
+
+    if (search[0].count > 0) {
+      await lib.updateOne({ book_name: item }, { $set: { count: search[0].count - 1 } });
+      console.log("book issued");
+    } else {
+      console.log("item is not available");
+    }
+  } catch (error) {
+    console.error("Error issuing book:", error);
+  } finally {
+    mongo.connection.close();
+  }
+}
+
+module.exports = issue;

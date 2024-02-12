@@ -1,0 +1,48 @@
+.size{
+    height:40px;
+    width:70px;
+    color:black;
+}
+.store_list{
+    border:2px solid black;
+    text-align: left;
+    height:100vh;
+    width:30vw;
+    overflow-y: hidden;
+    background-color: black;
+    color:white;
+}
+.item_list{
+    border:2px dotted yellow;
+    text-align: center;
+    height:100vh;
+    width:30vw;
+    overflow-y: hidden;
+    background-color: goldenrod;
+    color:black;
+    display: flex;
+    
+}
+.page-contain {
+    display: flex;
+    flex-direction: row; /* Arrange components horizontally */
+  }
+  .issue{
+    background-color: black;
+    color:white
+  }
+  .heading{
+    padding: 1px; 
+    border: 1px solid #dddddd;
+    text-align: left; 
+  }
+  .rows{
+    padding: 0px; 
+    margin: 0px;
+    border: 1px solid #dddddd;
+  }
+  .last{
+    display: grid;
+    background-color: black;
+    color: WHITE;
+  }
