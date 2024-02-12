@@ -1,8 +1,30 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-
+import { useState ,useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { borrow } from "../actions/login_sign";
+async function borrow_data(user,dispatch) {
+  try {
+    const response = await fetch("http://localhost:3001/get_user_data", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_name: user }),
+    });
+    const data = await response.json();
+    dispatch(borrow(data))
+    return data;
+  } catch (error) {
+    console.log("borrow_data_error", error);
+    return null;
+  }
+}
 async function call(itemname, cost, store, user) {
   try {
+    console.log(store)
+    if(store==""){
+      alert("please select a store")
+    }
+    else {
     const response = await fetch("http://localhost:3001/issue_item", {
       method: "POST",
       headers: {
@@ -15,12 +37,15 @@ async function call(itemname, cost, store, user) {
         user: user,
       }),
     });
-
+    if(response.status==400){
+      alert("item not available or enter correct details")
+    }
     if (response.ok) {
       alert("Item issued");
-    } else {
+    } if(response.status!=200 && response.status!=400) {
       alert("Failed to issue item");
     }
+  }
   } catch (error) {
     console.error("Error issuing item:", error);
   }
@@ -31,14 +56,32 @@ function Issue() {
   const [cost, setCost] = useState(0);
   const store = useSelector((state) => state.stores);
   const user = useSelector((state) => state.user_name);
+  const borrowed_data = useSelector((state) => state.borrow_reducer.list);
+ const dispatch=useDispatch()
+  const fr = async () => {
+    try {
+      const data = await borrow_data(user, dispatch);
+      if (JSON.stringify(borrowed_data) !== JSON.stringify(data)) {
+        dispatch(borrow(data));
+      }
+    } catch (error) {
+      console.error("Error updating borrowed data:", error);
+    }
+  };
+  
+
+useEffect(() => {
+  fr(); // Call fr function when component mounts
+}, [user]); // Add dependencies to useEffect hook
 
   return (
     <div>
       <h1>BORROW A ITEM</h1>
 <form
-  onSubmit={(e) => {
+  onSubmit={async (e) => {
     e.preventDefault(); 
-    call(item, cost, store, user);
+    await call(item, cost, store, user);
+    fr()
   }}
 >        ITEM:&nbsp;{" "}
         <input

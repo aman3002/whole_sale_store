@@ -15,8 +15,8 @@ async function loger(user, pass,dispatch) {
       dispatch(owner_validate());
 
       console.log("login up successfully");
-    } else {
-      console.error("Error signing up:", response.statusText);
+    } if(response.status==401) {
+      alert("incorrect login/password ");
     }
   } catch (error) {
     console.error("Error signing up:", error.message);

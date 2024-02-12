@@ -99,7 +99,7 @@ app.post("/login_owner",async(req,res)=>{
     [user,pass]=[req.body.user,req.body.password]
     const field=await own.find({user:user})
     if(field.length==0){
-        res.status(404).json({authorized:false,message:"user not exist"})
+        res.status(401).json({authorized:false,message:"user not exist"})
     }
     else if(field[0].password==pass){
         res.status(200).json({authorized:true,message:"login successful"})
@@ -164,10 +164,10 @@ app.get("/data2",async (req,res)=>{
 app.post("/issue_item", async (req, res) => {
     try {
         await  mongo.connect("mongodb://localhost:27017/book");
-      const { item, cost, store, user } = [req.body.item,req.body.cost,req.body.store,req.body.user];
+      const [item, cost, store, user ] = [req.body.item,req.body.cost,req.body.store,req.body.user];
       // Assuming issue is an asynchronous function
       const data = await mongo.model(`${store}`, schema.schema);
-const data2 = await data.find();
+const data2 = await data.find({book_name:item,cost:cost});
 console.log(data2,store)
 if (data2 && data2.length > 0 && data2[0].count > 0) {
   await issue(item, store, cost, user, store);
@@ -200,6 +200,8 @@ app.post("/return",async(req,res)=>{
     const [item,cost,shopname,user,isbn]=[req.body.item,req.body.cost,req.body.shop,req.body.user,req.body.isbn]
     const users=mongo.model(`${user}_boroweds`,schema.schema4)
     console.log(user)
+    const z=users.find({book_name:item,cost:cost,ISBN_No:isbn,shop_name:store})
+    if(z.length>0){
     await users.deleteOne({ISBN_No:isbn})
     const store=mongo.model(shopname,schema.schema)
     const p= await store.find({book_name:item})
@@ -208,7 +210,9 @@ app.post("/return",async(req,res)=>{
     mongo.connection.close()
     res.status(200).json({ message: "Item returned successfully" });
 }
-    catch(error){
+else{
+res.status(400)}
+}catch(error){
         res.status(500)
     }
 })

@@ -21,6 +21,9 @@ async function returns(item, cost, user, shop,isbn) {
     if (response.ok) {
       alert('Item returned');
     }
+    if(response.status==400){
+      alert("please write correct details")
+    }
   } catch (error) {
     alert('Error returning item');
   }
