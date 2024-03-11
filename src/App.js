@@ -1,14 +1,12 @@
 import './App.css';
-import Home from "./components/homepage"
 import React, { useState } from "react"
-import Apps from './components/owner/Homed';
-import Page from './components/owner/formpage';
+import Over from './components/owner/overal_output';
 function App() {
   const [after, setAfter] = useState(0);
   return (
     <div className="App">
         <div>
-          <Apps/>
+          < Over/>
         </div>
     </div>
   );

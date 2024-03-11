@@ -69,4 +69,15 @@ const schema4= mongo.Schema({
         required:true
     }
 } )
-module.exports={schema,schema2,schema3,schema4}
+const schema5=mongo.Schema({
+    name:{type:String,
+    required:true,
+    unique:true
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    }
+})
+module.exports={schema,schema2,schema3,schema4,schema5}

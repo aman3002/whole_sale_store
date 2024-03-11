@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector,useDispatch } from "react-redux"
+import { useLocation } from "react-router-dom";
+import { user_name } from "../../actions/login_sign";
 async function add(store, item, cost, category, count) {
     try {
         const response = await fetch("http://localhost:3001/add_item_owner", {
@@ -22,6 +24,17 @@ async function add(store, item, cost, category, count) {
 }
 
 function Add_owner_item(){
+    const name=useLocation()
+    const search=new URLSearchParams(name.search)
+    let names=search.get("name")
+    function removeSpacesAndConvertToLower(str) {
+        // Remove spaces using regex and convert to lowercase
+        return str.replace(/\s+/g, '_').toLowerCase();
+      }
+    names=removeSpacesAndConvertToLower(names)
+      
+    const dispatch=useDispatch()
+    dispatch(user_name(names))
     const store=useSelector((state)=>state.user_name)
     const [item,setitem]=useState("")
     const [category,setcategory]=useState("")

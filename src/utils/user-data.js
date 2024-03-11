@@ -11,6 +11,5 @@ async function user_creation(users,pass){
     const user_issued=mongo.model(`${users}_book_issueds`,schema.schema4)
     const data= new user_cred({user: users,password:pass})
    await  data.save()
-    mongo.connection.close()
 }
 module.exports={user_creation} 

@@ -11,6 +11,7 @@ async function borrow_data(user,dispatch) {
       body: JSON.stringify({ user_name: user }),
     });
     const data = await response.json();
+    console.log(data,"ok2")
     dispatch(borrow(data))
     return data;
   } catch (error) {
@@ -47,7 +48,7 @@ async function call(itemname, cost, store, user) {
     }
   }
   } catch (error) {
-    console.error("Error issuing item:", error);
+    console.error("Error issuing item:", error,"nono");
   }
 }
 
@@ -61,6 +62,7 @@ function Issue() {
   const fr = async () => {
     try {
       const data = await borrow_data(user, dispatch);
+      console.log(data,"ok")
       if (JSON.stringify(borrowed_data) !== JSON.stringify(data)) {
         dispatch(borrow(data));
       }

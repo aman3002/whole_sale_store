@@ -30,4 +30,8 @@ async function del(name){
     await book.deleteOne({"book_name":name})
     mongo.connection.close()
 }
-librarian_add({book_name:"book1",ISBN_No:12,category:"action",row_no:1,count:10,cost:50},"garg")
+async function connect(){
+    const z=await mongo.connect("mongodb:localhost:27017/book")
+}
+// librarian_add({book_name:"book1",ISBN_No:12,category:"action",row_no:1,count:10,cost:50},"garg")
+module.exports={connect}

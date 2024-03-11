@@ -5,7 +5,6 @@ async function search(librarian,data){
     const z=mongo.model(`${librarian}_book`,schema.schema)
     const p=await z.find(data)
     console.log(p)
-    mongo.connection.close()
     return p
 }
 module.exports={search}

@@ -24,7 +24,6 @@ async function issue(item, shop_name, cost, user, librarian) {
   } catch (error) {
     console.error("Error issuing book:", error);
   } finally {
-    mongo.connection.close();
   }
 }
 

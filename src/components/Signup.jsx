@@ -33,6 +33,33 @@ function Signup({data}) {
   };
   const dispatch=useDispatch()
   dispatch(user_name(user))
+  const handleGoogleLogin = async (e) => {
+    try {
+      e.preventDefault();
+      console.log("ibkjn")
+      // Redirect to Google authentication endpoint
+      window.location.replace("http://localhost:3001/auth/google-login");
+  
+      // Wait until the user is redirected back from Google authentication
+      // This code will not execute until the user comes back from Google authentication
+      window.addEventListener("focus", async () => {
+        // Fetch user data from your backend after successful authentication
+        const response = await fetch("http://localhost:3001/user");
+        const userData = await response.json();
+        console.log(userData);
+        const cook={validates:true}
+        const setcookie=await fetch("http://localhost:3001/cookie",{
+          method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user, password: pass }),
+        })
+      });
+    } catch (error) {
+      console.error("Error logging in with Google:", error.message);
+    }
+  };
   return (
     <div>
       <div>
@@ -57,7 +84,11 @@ function Signup({data}) {
         />
         <button onClick={()=>handleSignup()}>Submit</button>
         <p>  HAVE AN ACCOUNT?</p> <button onClick={()=>dispatch(action1())} className="size" value="signup">login</button> 
-        <button onClick={()=>dispatch(owner())}>owner</button>
+        <button onClick={()=>dispatch(owner())}> be a owner</button>
+        <br/>
+        <button className="google" onClick={handleGoogleLogin}>
+          signup with google
+        </button>
 
       </div>
     </div>

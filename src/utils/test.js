@@ -9,6 +9,5 @@ z.forEach(element => {
     });
 p.forEach(element => {
    console.log(element.name+"\n") 
-   mongo.connection.close()
 });}
 test()
