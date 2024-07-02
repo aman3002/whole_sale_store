@@ -6,12 +6,72 @@ const data=require("./user-data")
 const session=require("express-session")
 const store=require("./librarian")
 const app=express()
+const fs=require("fs")
+const path=require("path")
+const uploadsPath = path.join(__dirname, 'uploads');
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(uploadsPath));
+
 mongo.connect("mongodb://localhost:27017/book", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch(error => console.error("Error connecting to MongoDB:", error))
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(error => console.error("Error connecting to MongoDB:", error))
+function removeSpacesAndConvertToLower(str) {
+    // Check if str is undefined or null
+    if (!str) {
+      return ''; // Return an empty string or handle the case as appropriate
+    }
+    
+    // Replace spaces with underscores and convert to lowercase
+    return str.replace(/\s+/g, '_').toLowerCase();
+  }
+  
+  const createDirectory = (directory) => {
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory, { recursive: true });
+    }
+  };
+  app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: '*', // Allow requests from any origin (adjust as needed)
+    methods: 'GET,POST', // Allow GET and POST methods (adjust as needed)
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // Specify allowed headers
+}));
+
+const formidable = require('formidable');
+
+app.post('/upload', (req, res) => {
+    const form = new formidable.IncomingForm({uploadDir: path.join(__dirname, 'uploads'),
+        keepExtensions: true,});
+    form.parse(req, (err, fields, files) => {
+        req.body=fields
+        console.log(req.body,files,"ye")
+        if (err) {
+            console.error('Error parsing form:', err);
+            res.status(500).json({ error: 'Error parsing form' });
+            return;
+        }
+
+        const oldpath = files.file[0].filepath;
+        const newpath = path.join(__dirname, 'uploads', req.body.name[0]);
+        createDirectory(newpath)
+        console.log(newpath,oldpath)
+        const overall=`src/utils/uploads/${req.body.name[0]}/${files.file[0].newFilename}`
+        console.log(overall)
+        fs.rename(oldpath, path.join(newpath, files.file[0].newFilename), (err) => {
+            if (err) {
+                console.error('Error moving file:', err);
+                res.status(500).json({ error: 'Error moving file' });
+                return;
+            }
+            res.status(200).json({name:overall});
+        });
+    });
+});
 
 const issue=require("./issuing_book")
 const passport=require("./passport")()
@@ -29,12 +89,6 @@ app.use(session({
     secret: 'your_secret_key', // Change this to a secure random string
     resave: false,
     saveUninitialized: false
-  }))
-
-app.use(cors({
-    origin: 'http://localhost:3000', // Allow requests from this origin
-    methods: 'GET', // Allow only GET requests (adjust as needed)
-    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // Add the required header
   }))
 app.use(express.json())
 let existed=false
@@ -164,7 +218,7 @@ app.post("/get_store_data",async(req,res)=>{
 app.get("/data",async (req,res)=>{
     try{
     
-        const p=mongo.model(`${shop_name}`,schema.schema)
+        const p=mongo.model(`${shop_name}`,schema.schema6)
         const z = await p.find({ count: { $gt: 0 } }) // Find documents where count is greater than 0
         console.log(z,"ojomk")
         try{
@@ -209,13 +263,13 @@ app.get("/data2",async (req,res)=>{
 app.post("/issue_item", async (req, res) => {
     try {
 
-      const [item, cost, store, user ] = [req.body.item,req.body.cost,req.body.store,req.body.user]
+      const [item, store, user ] = [req.body.item,req.body.store,req.body.user]
       // Assuming issue is an asynchronous function
-      const data = await mongo.model(`${store}`, schema.schema)
-const data2 = await data.find({book_name:item,cost:cost})
+      const data = await mongo.model(`${store}`, schema.schema6)
+const data2 = await data.find({book_name:item})
 console.log(data2,store)
 if (data2 && data2.length > 0 && data2[0].count > 0) {
-  await issue(item, store, cost, user, store)
+  await issue(item, store, data2[0].cost, user, store)
   res.status(200).json({ message: "Item issued successfully" })
 } else {
   res.status(400).json({ message: "ITEM NOT AVAILABLE" })
@@ -228,32 +282,33 @@ if (data2 && data2.length > 0 && data2[0].count > 0) {
     
 
   })
-app.post("/add_item_owner",async(req,res)=>{
-    try{
-    
-    const [store,item,cost,count,category]=[req.body.store,req.body.item,req.body.cost,req.body.count,req.body.category]
-    const store_name=mongo.model(`${store}_store`,schema.schema)
-    const a=await new store_name({book_name:item,cost:cost,count:count,category:category})
-    a.save() 
-    res.status(200).json({ message: "Item added successfully" })
-}
-    catch(error){
-        res.status(500)
-    }
-    
+  app.post('/add_item_owner', async (req, res) => {
+    try {
+        const [store, item, cost, count, category, file] = [req.body.store, req.body.item, req.body.cost, req.body.count, req.body.category, req.body.file];
+        const store_name = mongo.model(`${store}_store`, schema.schema6);
 
-})
+        console.log(file,"hg");
+
+        const newItem = new store_name({ book_name: item, cost: cost, count: count, category: category, filename: file });
+        await newItem.save();
+
+        res.status(200).json({ message: "Item added successfully" });
+    } catch (error) {
+        console.error('Error adding item:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 app.post("/return",async(req,res)=>{
     try{
 
     const [item,cost,shopname,user,isbn]=[req.body.item,req.body.cost,req.body.shop,req.body.user,req.body.isbn]
     const users=mongo.model(`${user}_boroweds`,schema.schema4)
-    const z = await users.find({book_name: item, cost: cost, ISBN_No: isbn, shop_name: shopname});
+    const z = await users.find({book_name: item, ISBN_No: isbn, shop_name: shopname});
     console.log("####################")
     console.log(z,"error")
     if(z.length>0){
     await users.deleteOne({ISBN_No:isbn})
-    const store=mongo.model(shopname,schema.schema)
+    const store=mongo.model(shopname,schema.schema6)
     const p= await store.find({book_name:item})
     console.log("enter")
     await store.updateOne({book_name:item},{$set:{count:p[0].count+1}})

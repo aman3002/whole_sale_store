@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { action1,owner,owner_validate,user_name } from "../../actions/login_sign";
 import {useDispatch } from "react-redux";
+
+// Inside your component
 async function loger(user, pass,dispatch) {
   try {
     const response = await fetch("http://localhost:3001/login_owner", {
@@ -12,7 +14,7 @@ async function loger(user, pass,dispatch) {
     });
 
     if (response.ok) {
-      dispatch(owner_validate());
+      window.location.href=`/dashboard_owner?name=${user}`; // Redirect to dashboard_owner
 
       console.log("login up successfully");
     } if(response.status==401) {

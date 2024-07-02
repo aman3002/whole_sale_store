@@ -4,6 +4,7 @@ const schema = require("./schema");
 mongo.connect("mongodb://localhost:27017/book");
 
 async function issue(item, shop_name, cost, user, librarian) {
+  console.log(cost,"bgfnf")
   const data = { book_name: item, ISBN_No: Date.now(), cost: cost, shop_name: shop_name };
   const users = mongo.model(`${user}_boroweds`, schema.schema4);
   const ok = new users(data);

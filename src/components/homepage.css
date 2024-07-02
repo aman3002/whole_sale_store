@@ -31,11 +31,25 @@
     background-color: black;
     color:white
   }
+  
+  td,th{
+    padding-right:1vw;
+  }
   .heading{
     padding: 1px; 
     border: 1px solid #dddddd;
     text-align: left; 
   }
+  .table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th, .table td {
+    border: 1px solid black;
+    padding: 8px;
+}
   .rows{
     padding: 0px; 
     margin: 0px;

@@ -19,7 +19,7 @@ async function borrow_data(user,dispatch) {
     return null;
   }
 }
-async function call(itemname, cost, store, user) {
+async function call(itemname, store, user) {
   try {
     console.log(store)
     if(store==""){
@@ -33,7 +33,6 @@ async function call(itemname, cost, store, user) {
       },
       body: JSON.stringify({
         item: itemname,
-        cost: cost,
         store: store,
         user: user,
       }),
@@ -82,7 +81,7 @@ useEffect(() => {
 <form
   onSubmit={async (e) => {
     e.preventDefault(); 
-    await call(item, cost, store, user);
+    await call(item, store, user);
     fr()
   }}
 >        ITEM:&nbsp;{" "}
@@ -92,14 +91,6 @@ useEffect(() => {
           placeholder="item name"
           value={item}
           onChange={(e) => setItem(e.target.value)}
-        />
-        COST:&nbsp;{" "}
-        <input
-          type="number"
-          required
-          placeholder="cost"
-          value={cost}
-          onChange={(e) => setCost(e.target.value)}
         />
   <button type="submit">SUBMIT</button>
       </form>

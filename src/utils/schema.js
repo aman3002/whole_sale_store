@@ -1,3 +1,4 @@
+const { type } = require("@testing-library/user-event/dist/type")
 const mongo=require("mongoose")
 const schema= mongo.Schema({
     book_name:{
@@ -16,6 +17,29 @@ const schema= mongo.Schema({
     cost:{
         type:Number,
         required:true 
+    }
+} )
+const schema6= mongo.Schema({
+    book_name:{
+        type:String
+        ,required:true,
+        unique:true
+    },
+    category:{
+        type:String,
+        required:true
+    },
+    count:{
+        type:Number,
+        required:true 
+    },
+    cost:{
+        type:Number,
+        required:true 
+    },
+    filename:{
+        type:String,
+        required:true
     }
 } )
 const schema2=mongo.Schema({
@@ -80,4 +104,4 @@ const schema5=mongo.Schema({
         unique:true
     }
 })
-module.exports={schema,schema2,schema3,schema4,schema5}
+module.exports={schema,schema2,schema3,schema4,schema5,schema6}

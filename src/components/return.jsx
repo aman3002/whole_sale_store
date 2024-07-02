@@ -85,8 +85,6 @@ async function borrow_data(user,dispatch) {
         >
           ITEM &nbsp;
           <input type="text" placeholder="Item" onChange={(e) => setItem(e.target.value)} required />
-          Cost &nbsp;
-          <input type="number" placeholder="Cost" onChange={(e) => setCost(e.target.value)} required />
           Shop &nbsp;<input type="text" placeholder="Shop" onChange={(e) => setShop(e.target.value)} required />
           ISBN_NO<input type="text" placeholder="isbn" onChange={(e) => setisbn(e.target.value)} required />
           <button type="submit">Submit</button>

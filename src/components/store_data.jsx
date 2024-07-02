@@ -28,11 +28,19 @@ function Store_data() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await store(name);
+        let data = await store(name);
         console.log(data);
+        data = data.map((item) => {
+          return {
+            ...item, // Spread the existing properties
+            filename: `http://localhost:3001/${item.filename}` // Update the filename property
+          };
+        })
+        console.log(data,"after updation")
         dispatch(store_data(data));
+        console.log(datas,"datas")
       } catch (error) {
-        console.log("error fetching data");
+        console.log("error fetching data",error);
       }
     };
 
@@ -46,11 +54,12 @@ function Store_data() {
       ) : (
         <>
           {datas.length > 0 ? ( // Check if data is available
-            <table>
+            <table style={{border:"black solid 1px"}}>
             <thead>
               <tr className="heading">
                 <th>Item Name</th>
                 <th>Rent</th>
+                <th>Image</th>
               </tr>
             </thead>
             <tbody>
@@ -58,6 +67,9 @@ function Store_data() {
                 <tr key={item.id} className="rows">
                   <td>{item.book_name}</td>
                   <td>{item.cost}</td>
+                  <td>   <img src={item.filename} style={{ maxWidth: '30vw', maxHeight: '30vh' }} alt="Description" />
+                  </td>
+                  
                 </tr>
               ))}
             </tbody>
