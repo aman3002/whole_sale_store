@@ -83,11 +83,8 @@ function Add_owner_item(){
                 COST &nbsp; <input type="number" placeholder="cost" onChange={(e)=>setcost(e.target.value)} required  />
                 COUNT &nbsp; <input type="number" placeholder="count" onChange={(e)=>setcount(e.target.value)} required />
                 CATEGORY &nbsp; <input type="text" placeholder="category" onChange={(e)=>setcategory(e.target.value)} required />
-                <form onSubmit={handleSubmit}>
                 Image &nbsp; <input type="file" onChange={handleFileChange} />
-                {file && <button type="button" onClick={handleSubmit}>Upload</button>}
                 <br/>
-                </form>
                 {item && cost && count && category && file && <button type="submit">submit</button>}
             </form>
         </div>
