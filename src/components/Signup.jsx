@@ -3,7 +3,7 @@ import { owner,action1, validate,user_name} from "../actions/login_sign";
 import { useDispatch } from "react-redux";
 async function signup(user, pass,dispatch) {
   try {
-    const response = await fetch("http://localhost:3001/signup", {
+    const response = await fetch(`${process.env.REACT}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,6 @@ function Signup({data}) {
       console.log("ibkjn")
       // Redirect to Google authentication endpoint
       window.location.replace(`${process.env.REACT}/auth/google-login`);
-  
       // Wait until the user is redirected back from Google authentication
       // This code will not execute until the user comes back from Google authentication
       window.addEventListener("focus", async () => {
