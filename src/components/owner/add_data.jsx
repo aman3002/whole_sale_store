@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { user_name } from "../../actions/login_sign";
 async function add(store, item, cost, category, count,file) {
     try {
-        const response = await fetch("http://localhost:3001/add_item_owner", {
+        const response = await fetch(`${process.env.REACT}/add_item_owner`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json" // Corrected typo
@@ -50,29 +50,6 @@ function Add_owner_item(){
     const handleFileChange = (event) => {
       setFile(event.target.files[0]);
     };
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      try {
-        const formData = await new FormData();
-        formData.append('file', file);
-        formData.append('name', names);
-        formData.append('item', item); 
-        console.log(names,item,"okok")
-    
-        const res=await fetch('http://localhost:3001/upload', {
-          method: 'POST',
-          body: formData 
-        });
-        if(res.name){
-          setFilename(res.name)
-        }
-        console.log('File uploaded successfully',filename);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
-    };
     
     return(
         <div>
@@ -85,7 +62,7 @@ function Add_owner_item(){
                   formData.append('item', item); 
                   console.log(names,item,"okok")
               
-                  let res=await fetch('http://localhost:3001/upload', {
+                  let res=await fetch(`${process.env.REACT}/upload`, {
                     method: 'POST',
                     body: formData 
                   });

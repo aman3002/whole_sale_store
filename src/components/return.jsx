@@ -4,7 +4,7 @@ import { borrow } from '../actions/login_sign';
 
 async function returns(item, cost, user, shop,isbn) {
   try {
-    const response = await fetch('http://localhost:3001/return', {
+    const response = await fetch(`${process.env.REACT}/return`, {
       method: 'post',
       headers: {
         'content-type': 'application/json'
@@ -31,7 +31,7 @@ async function returns(item, cost, user, shop,isbn) {
 }
 async function borrow_data(user,dispatch) {
     try {
-      const response = await fetch("http://localhost:3001/get_user_data", {
+      const response = await fetch(`${process.env.REACT}/get_user_data`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

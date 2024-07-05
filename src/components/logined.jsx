@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 async function loger(user, pass) {
   try {
-    const response = await fetch("http://localhost:3001/login", {
+    const response = await fetch(`${process.env.REACT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

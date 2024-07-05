@@ -38,17 +38,17 @@ function Signup({data}) {
       e.preventDefault();
       console.log("ibkjn")
       // Redirect to Google authentication endpoint
-      window.location.replace("http://localhost:3001/auth/google-login");
+      window.location.replace(`${process.env.REACT}/auth/google-login`);
   
       // Wait until the user is redirected back from Google authentication
       // This code will not execute until the user comes back from Google authentication
       window.addEventListener("focus", async () => {
         // Fetch user data from your backend after successful authentication
-        const response = await fetch("http://localhost:3001/user");
+        const response = await fetch(`${process.env.REACT}/user`);
         const userData = await response.json();
         console.log(userData);
         const cook={validates:true}
-        const setcookie=await fetch("http://localhost:3001/cookie",{
+        const setcookie=await fetch(`${process.env.REACT}/cookie`,{
           method: "POST",
       headers: {
         "Content-Type": "application/json",

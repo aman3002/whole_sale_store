@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { action1,owner } from "../../actions/login_sign";
 async function signup(user, pass,dispatch) {
   try {
-    const response = await fetch("http://localhost:3001/signup_owner", {
+    const response = await fetch(`${process.env.REACT}/signup_owner`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,17 +39,17 @@ function Signup({data}) {
       e.preventDefault();
       console.log("ibkjn")
       // Redirect to Google authentication endpoint
-      window.location.replace("http://localhost:3001/auth/google-login-owner");
+      window.location.replace(`${process.env.REACT}/auth/google-login-owner`);
   
       // Wait until the user is redirected back from Google authentication
       // This code will not execute until the user comes back from Google authentication
       window.addEventListener("focus", async () => {
         // Fetch user data from your backend after successful authentication
-        const response = await fetch("http://localhost:3001/user");
+        const response = await fetch(`${process.env.REACT}/user`);
         const userData = await response.json();
         console.log(userData);
         const cook={validates:true}
-        const setcookie=await fetch("http://localhost:3001/cookie",{
+        const setcookie=await fetch(`${process.env.REACT}/cookie`,{
           method: "POST",
       headers: {
         "Content-Type": "application/json",

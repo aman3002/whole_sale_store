@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 async function loger(user, pass, dispatch) {
   try {
-    const response = await fetch("http://localhost:3001/login", {
+    const response = await fetch(`${process.env.REACT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +15,7 @@ async function loger(user, pass, dispatch) {
     });
 
     if (response.ok) {
-      window.location.href=`http://localhost:3000/dashboard?name=${user}`
+      window.location.href=`${process.env.REDIRECT}/dashboard?name=${user}`
       console.log("login up successfully");
     } else {
       console.error("Error signing up:", response.statusText);
@@ -40,18 +40,18 @@ function Login() {
       e.preventDefault();
       console.log("ibkjn")
       // Redirect to Google authentication endpoint
-      window.location.replace("http://localhost:3001/auth/google-login");
+      window.location.replace(`${process.env.REACT}/auth/google-login`);
   
       // Wait until the user is redirected back from Google authentication
       // This code will not execute until the user comes back from Google authentication
       window.addEventListener("focus", async () => {
         // Fetch user data from your backend after successful authentication
-        const response = await fetch("http://localhost:3001/user");
+        const response = await fetch(`${process.env.REACT}/user`);
         const userData = await response.json();
         console.log(userData);
         const cook={validates:true}
         console.log(id)
-        const setcookie=await fetch("http://localhost:3001/cookie",{
+        const setcookie=await fetch(`${process.env.REACT}/cookie`,{
           method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { borrow } from "../actions/login_sign";
 async function borrow_data(user,dispatch) {
   try {
-    const response = await fetch("http://localhost:3001/get_user_data", {
+    const response = await fetch(`${process.env.REACT}/get_user_data`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,7 @@ async function call(itemname, store, user) {
       alert("please select a store")
     }
     else {
-    const response = await fetch("http://localhost:3001/issue_item", {
+    const response = await fetch(`${process.env.REACT}/issue_item`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

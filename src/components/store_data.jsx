@@ -5,7 +5,7 @@ import { store_data } from "../actions/login_sign";
 import "./homepage.css"
 async function store(store_name) {
   try {
-    const response = await fetch("http://localhost:3001/get_store_data", {
+    const response = await fetch(`${process.env.REACT}//get_store_data`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,7 @@ function Store_data() {
         data = data.map((item) => {
           return {
             ...item, // Spread the existing properties
-            filename: `http://localhost:3001/${item.filename}` // Update the filename property
+            filename: `${process.env.REACT}/${item.filename}` // Update the filename property
           };
         })
         console.log(data,"after updation")

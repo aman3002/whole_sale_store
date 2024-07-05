@@ -3,7 +3,7 @@ import { storelist,store_name } from "../actions/login_sign";
 import { useSelector,useDispatch } from "react-redux";
 async function valid() {
   try {
-    const response = await fetch("http://localhost:3001/validation", {
+    const response = await fetch(`${process.env.REACT}/validation`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

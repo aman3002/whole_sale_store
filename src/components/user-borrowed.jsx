@@ -4,7 +4,7 @@ import { borrow } from "../actions/login_sign";
 
 async function borrow_data(user,dispatch) {
   try {
-    const response = await fetch("http://localhost:3001/get_user_data", {
+    const response = await fetch(`${process.env.REACT}/get_user_data`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
