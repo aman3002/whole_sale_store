@@ -1,4 +1,3 @@
-const mongo=require("mongoose")
 const schema=require("./schema")
 const express=require("express")
 const cors = require('cors')
@@ -8,9 +7,10 @@ const store=require("./librarian")
 const app=express()
 const fs=require("fs")
 const path=require("path")
+const mongo=require("mongoose")
 const uploadsPath = path.join(__dirname, 'uploads');
-const mongo=require("./connect")
-mongo()
+const mongos=require("./connect")
+mongos.connect()
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(uploadsPath));
 

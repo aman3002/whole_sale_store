@@ -1,9 +1,7 @@
 const mongo=require("mongoose")
 const schema= require("./schema")
-const mongo=require("./connect")
-mongo()
+
 async function add_lib(data,password){
-    mongo()
     const p=await mongo.model(`${data}_store`,schema.schema)
     const create=await mongo.model("owner_cred",schema.schema2)
     const ok=await new create({user:data,password:password})

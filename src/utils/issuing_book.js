@@ -1,8 +1,6 @@
 const mongo = require("mongoose");
 const schema = require("./schema");
 
-const mongo=require("./connect")
-mongo()
 async function issue(item, shop_name, cost, user, librarian) {
   console.log(cost,"bgfnf")
   const data = { book_name: item, ISBN_No: Date.now(), cost: cost, shop_name: shop_name };

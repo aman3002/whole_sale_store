@@ -1,7 +1,5 @@
-const mongo=require("mongoose")
 const schema=require("./schema")
-const mongo=require("./connect")
-mongo()
+
 async function librarian_add(data,librarian){
     const book=mongo.model(`${librarian}`,schema.schema)    
     let duplicate=false
