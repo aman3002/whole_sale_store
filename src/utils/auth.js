@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const configurePassport = require("./passport");
 const passport = configurePassport();
+require("dotenv").config()
 const schema=require("./schema")
 let user;
 router.use(passport.initialize());
@@ -35,7 +36,7 @@ router.get('/dashboard_google', async(req, res) => {
     console.log('Google ID:', id);
     console.log('Display Name:', displayName);
     console.log('Email:', emails[0].value);
-    res.redirect(`http://localhost:3000/dashboard_google?name=${user.name}`)
+    res.redirect(`${process.env.REDIRECT}/dashboard_google?name=${user.name}`)
     console.log(user,"ihodr")
     const field=await google.find({email:emails[0].value,name:displayName})
     if(field.length==0){

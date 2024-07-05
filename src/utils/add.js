@@ -1,6 +1,7 @@
 const mongo=require("mongoose")
 const schema=require("./schema")
-mongo.connect("mongodb://localhost:27017/book")
+const mongo=require("./connect")
+mongo()
 async function librarian_add(data,librarian){
     const book=mongo.model(`${librarian}`,schema.schema)    
     let duplicate=false
@@ -30,8 +31,4 @@ async function del(name){
     await book.deleteOne({"book_name":name})
     mongo.connection.close()
 }
-async function connect(){
-    await mongo.connect("mongodb:localhost:27017/book")
-}
-// librarian_add({book_name:"book1",ISBN_No:12,category:"action",row_no:1,count:10,cost:50},"garg")
 module.exports={connect}
