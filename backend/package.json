@@ -1,8 +1,7 @@
 {
-  "name": "backend",
+  "name": "vercel-express-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "add.js",
+  "main": "validate.js",
   "scripts": {
     "start": "node validate.js"
   },
